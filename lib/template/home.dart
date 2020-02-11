@@ -10,7 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-AddRecordController _addRecordController = AddRecordController();
+AddRecordController _addRecordController ;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -21,7 +21,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   _HomeState() {
+   
     print("homestate");
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _addRecordController = AddRecordController();
   }
   @override
   Widget build(BuildContext context) {
@@ -480,12 +487,5 @@ class _HomeState extends State<Home> {
             ),
           );
         });
-    @override
-    void dispose() {
-      // TODO: implement dispose
-      _addRecordController.dispose();
-      super.dispose();
-      
-    }
   }
 }
