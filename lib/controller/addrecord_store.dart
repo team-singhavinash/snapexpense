@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:mobx/mobx.dart';
 import 'package:path/path.dart';
@@ -8,7 +9,22 @@ part 'addrecord_store.g.dart';
 class AddRecordController = _AddRecordController with _$AddRecordController;
 
 abstract class _AddRecordController with Store {
-  SnapExpenseDatabase db = SnapExpenseDatabase();
+  SnapExpenseDatabase db ;
+  StreamController<List<Addrecord>> _streamController;
+
+  ObservableStream<List<Addrecord>> recordStream;
+    _AddRecordController(){
+      db=SnapExpenseDatabase();
+      db.getRecords;
+      _streamController = StreamController<List<Addrecord>>();
+      _streamController.addStream(db.watchAllRecords());
+      recordStream =  ObservableStream(_streamController.stream);
+      print(recordStream.status);
+    }
+  @computed
+  get customStream async {
+  }
+
   @computed
   Future<String> get getFilePath async {  //the path where file is created
     Directory dir = await getExternalStorageDirectory();
@@ -31,5 +47,18 @@ abstract class _AddRecordController with Store {
   @action
   Future insertRecord(Addrecord newrecord) async {
     return await db.insertRecords(newrecord);
+  }
+
+  @action
+  Future<bool> deleteRecord(Addrecord oldrecord)async{
+    int status=await db.deleteRecords(oldrecord);
+    if(status>0){
+      return true;
+    }else
+    return false;
+  }
+
+  void dispose() async {
+    await _streamController.close();
   }
 }

@@ -6,16 +6,22 @@ import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:path/path.dart';
 import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/model/addrecord_moor.dart';
+import 'package:snapexpenses/router/router.gr.dart';
 
 class AddRecord extends StatefulWidget {
+  int imageSelectionOption;
+  AddRecord(this.imageSelectionOption);
   @override
-  _AddRecordState createState() => _AddRecordState();
+  _AddRecordState createState() => _AddRecordState(this.imageSelectionOption);
 }
 
 class _AddRecordState extends State<AddRecord> {
   // intilizing controller
   AddRecordController controller = AddRecordController();
-
+  int imageSelectionOption;
+  _AddRecordState(this.imageSelectionOption){
+     getImage(this.imageSelectionOption);
+  }
   final _formKeyUpload = GlobalKey<FormState>();
   int _amnt;
   String _desc;
@@ -25,9 +31,6 @@ class _AddRecordState extends State<AddRecord> {
   String _selected = 'Splash Out';
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descFocus = FocusNode();
-  _AddRecordState() {
-    getImage(this.camera);
-  }
 
   Future getImage(camera) async {
     var temp;
@@ -36,11 +39,14 @@ class _AddRecordState extends State<AddRecord> {
     else {
       temp = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
-    if (temp == null) {}
-    setState(() {
-      print(temp);
-      _image = temp;
-    });
+    if (temp == null) {
+      Router.navigator.pop();
+    }else{
+      setState(() {
+       _image=temp;   
+      });
+     
+    }
   }
 
   @override
@@ -88,7 +94,11 @@ class _AddRecordState extends State<AddRecord> {
                           desc: _desc,
                           expenseTag: _selected,
                           imgPath: await controller.getFilePath +
-                              basename(_image.path)));
+                              basename(_image.path))
+                              );
+                              Router.navigator.pushNamed(
+                                Router.home,
+                              );
                     });
 
                     setState(() {
