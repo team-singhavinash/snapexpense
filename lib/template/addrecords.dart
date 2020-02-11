@@ -96,9 +96,7 @@ class _AddRecordState extends State<AddRecord> {
                           imgPath: await controller.getFilePath +
                               basename(_image.path))
                               );
-                              Router.navigator.pushNamed(
-                                Router.home,
-                              );
+                             Router.navigator.pop();
                     });
 
                     setState(() {
