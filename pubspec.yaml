@@ -7,6 +7,9 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  timeago: #A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
+  font_awesome_flutter:  #The Font Awesome Icon pack available as set of Flutter Icons.
+  flutter_money_formatter: 
   grouped_buttons: #A set of Flutter widgets that makes grouping Checkboxes and Radio Buttons much easier!
 
   image_picker:  #change to multi image picker

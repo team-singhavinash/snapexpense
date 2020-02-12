@@ -13,19 +13,24 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
   final String desc;
   final String imgPath;
   final String expenseTag;
+  final bool strike;
   final DateTime timestamp;
+  final String strikeComment;
   Addrecord(
       {this.id,
       @required this.amount,
       this.desc,
       this.imgPath,
       this.expenseTag,
-      @required this.timestamp});
+      this.strike,
+      @required this.timestamp,
+      this.strikeComment});
   factory Addrecord.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
     return Addrecord(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
@@ -35,8 +40,12 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
           .mapFromDatabaseResponse(data['${effectivePrefix}img_path']),
       expenseTag: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}expense_tag']),
+      strike:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}strike']),
       timestamp: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}timestamp']),
+      strikeComment: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}strike_comment']),
     );
   }
   factory Addrecord.fromJson(Map<String, dynamic> json,
@@ -48,7 +57,9 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
       desc: serializer.fromJson<String>(json['desc']),
       imgPath: serializer.fromJson<String>(json['imgPath']),
       expenseTag: serializer.fromJson<String>(json['expenseTag']),
+      strike: serializer.fromJson<bool>(json['strike']),
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
+      strikeComment: serializer.fromJson<String>(json['strikeComment']),
     );
   }
   @override
@@ -60,7 +71,9 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
       'desc': serializer.toJson<String>(desc),
       'imgPath': serializer.toJson<String>(imgPath),
       'expenseTag': serializer.toJson<String>(expenseTag),
+      'strike': serializer.toJson<bool>(strike),
       'timestamp': serializer.toJson<DateTime>(timestamp),
+      'strikeComment': serializer.toJson<String>(strikeComment),
     };
   }
 
@@ -77,9 +90,14 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
       expenseTag: expenseTag == null && nullToAbsent
           ? const Value.absent()
           : Value(expenseTag),
+      strike:
+          strike == null && nullToAbsent ? const Value.absent() : Value(strike),
       timestamp: timestamp == null && nullToAbsent
           ? const Value.absent()
           : Value(timestamp),
+      strikeComment: strikeComment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(strikeComment),
     );
   }
 
@@ -89,14 +107,18 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
           String desc,
           String imgPath,
           String expenseTag,
-          DateTime timestamp}) =>
+          bool strike,
+          DateTime timestamp,
+          String strikeComment}) =>
       Addrecord(
         id: id ?? this.id,
         amount: amount ?? this.amount,
         desc: desc ?? this.desc,
         imgPath: imgPath ?? this.imgPath,
         expenseTag: expenseTag ?? this.expenseTag,
+        strike: strike ?? this.strike,
         timestamp: timestamp ?? this.timestamp,
+        strikeComment: strikeComment ?? this.strikeComment,
       );
   @override
   String toString() {
@@ -106,7 +128,9 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
           ..write('desc: $desc, ')
           ..write('imgPath: $imgPath, ')
           ..write('expenseTag: $expenseTag, ')
-          ..write('timestamp: $timestamp')
+          ..write('strike: $strike, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('strikeComment: $strikeComment')
           ..write(')'))
         .toString();
   }
@@ -118,8 +142,14 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
           amount.hashCode,
           $mrjc(
               desc.hashCode,
-              $mrjc(imgPath.hashCode,
-                  $mrjc(expenseTag.hashCode, timestamp.hashCode))))));
+              $mrjc(
+                  imgPath.hashCode,
+                  $mrjc(
+                      expenseTag.hashCode,
+                      $mrjc(
+                          strike.hashCode,
+                          $mrjc(timestamp.hashCode,
+                              strikeComment.hashCode))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -129,7 +159,9 @@ class Addrecord extends DataClass implements Insertable<Addrecord> {
           other.desc == this.desc &&
           other.imgPath == this.imgPath &&
           other.expenseTag == this.expenseTag &&
-          other.timestamp == this.timestamp);
+          other.strike == this.strike &&
+          other.timestamp == this.timestamp &&
+          other.strikeComment == this.strikeComment);
 }
 
 class AddrecordsCompanion extends UpdateCompanion<Addrecord> {
@@ -138,14 +170,18 @@ class AddrecordsCompanion extends UpdateCompanion<Addrecord> {
   final Value<String> desc;
   final Value<String> imgPath;
   final Value<String> expenseTag;
+  final Value<bool> strike;
   final Value<DateTime> timestamp;
+  final Value<String> strikeComment;
   const AddrecordsCompanion({
     this.id = const Value.absent(),
     this.amount = const Value.absent(),
     this.desc = const Value.absent(),
     this.imgPath = const Value.absent(),
     this.expenseTag = const Value.absent(),
+    this.strike = const Value.absent(),
     this.timestamp = const Value.absent(),
+    this.strikeComment = const Value.absent(),
   });
   AddrecordsCompanion.insert({
     this.id = const Value.absent(),
@@ -153,7 +189,9 @@ class AddrecordsCompanion extends UpdateCompanion<Addrecord> {
     this.desc = const Value.absent(),
     this.imgPath = const Value.absent(),
     this.expenseTag = const Value.absent(),
+    this.strike = const Value.absent(),
     @required DateTime timestamp,
+    this.strikeComment = const Value.absent(),
   })  : amount = Value(amount),
         timestamp = Value(timestamp);
   AddrecordsCompanion copyWith(
@@ -162,14 +200,18 @@ class AddrecordsCompanion extends UpdateCompanion<Addrecord> {
       Value<String> desc,
       Value<String> imgPath,
       Value<String> expenseTag,
-      Value<DateTime> timestamp}) {
+      Value<bool> strike,
+      Value<DateTime> timestamp,
+      Value<String> strikeComment}) {
     return AddrecordsCompanion(
       id: id ?? this.id,
       amount: amount ?? this.amount,
       desc: desc ?? this.desc,
       imgPath: imgPath ?? this.imgPath,
       expenseTag: expenseTag ?? this.expenseTag,
+      strike: strike ?? this.strike,
       timestamp: timestamp ?? this.timestamp,
+      strikeComment: strikeComment ?? this.strikeComment,
     );
   }
 }
@@ -236,6 +278,18 @@ class $AddrecordsTable extends Addrecords
     );
   }
 
+  final VerificationMeta _strikeMeta = const VerificationMeta('strike');
+  GeneratedBoolColumn _strike;
+  @override
+  GeneratedBoolColumn get strike => _strike ??= _constructStrike();
+  GeneratedBoolColumn _constructStrike() {
+    return GeneratedBoolColumn(
+      'strike',
+      $tableName,
+      true,
+    );
+  }
+
   final VerificationMeta _timestampMeta = const VerificationMeta('timestamp');
   GeneratedDateTimeColumn _timestamp;
   @override
@@ -248,9 +302,23 @@ class $AddrecordsTable extends Addrecords
     );
   }
 
+  final VerificationMeta _strikeCommentMeta =
+      const VerificationMeta('strikeComment');
+  GeneratedTextColumn _strikeComment;
+  @override
+  GeneratedTextColumn get strikeComment =>
+      _strikeComment ??= _constructStrikeComment();
+  GeneratedTextColumn _constructStrikeComment() {
+    return GeneratedTextColumn(
+      'strike_comment',
+      $tableName,
+      true,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [id, amount, desc, imgPath, expenseTag, timestamp];
+      [id, amount, desc, imgPath, expenseTag, strike, timestamp, strikeComment];
   @override
   $AddrecordsTable get asDslTable => this;
   @override
@@ -282,11 +350,21 @@ class $AddrecordsTable extends Addrecords
       context.handle(_expenseTagMeta,
           expenseTag.isAcceptableValue(d.expenseTag.value, _expenseTagMeta));
     }
+    if (d.strike.present) {
+      context.handle(
+          _strikeMeta, strike.isAcceptableValue(d.strike.value, _strikeMeta));
+    }
     if (d.timestamp.present) {
       context.handle(_timestampMeta,
           timestamp.isAcceptableValue(d.timestamp.value, _timestampMeta));
     } else if (isInserting) {
       context.missing(_timestampMeta);
+    }
+    if (d.strikeComment.present) {
+      context.handle(
+          _strikeCommentMeta,
+          strikeComment.isAcceptableValue(
+              d.strikeComment.value, _strikeCommentMeta));
     }
     return context;
   }
@@ -317,8 +395,15 @@ class $AddrecordsTable extends Addrecords
     if (d.expenseTag.present) {
       map['expense_tag'] = Variable<String, StringType>(d.expenseTag.value);
     }
+    if (d.strike.present) {
+      map['strike'] = Variable<bool, BoolType>(d.strike.value);
+    }
     if (d.timestamp.present) {
       map['timestamp'] = Variable<DateTime, DateTimeType>(d.timestamp.value);
+    }
+    if (d.strikeComment.present) {
+      map['strike_comment'] =
+          Variable<String, StringType>(d.strikeComment.value);
     }
     return map;
   }

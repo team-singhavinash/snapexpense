@@ -12,7 +12,9 @@ class Addrecords extends Table{
   TextColumn get desc => text().nullable()();
   TextColumn get imgPath => text().nullable()();
   TextColumn get expenseTag => text().nullable()();
+  BoolColumn get strike => boolean().nullable()();
   DateTimeColumn get timestamp => dateTime()();
+  TextColumn get strikeComment=>text().nullable()();
 }
 
 
@@ -39,7 +41,10 @@ class SnapExpenseDatabase extends _$SnapExpenseDatabase  {
   // are covered later in this readme.
   @override
   int get schemaVersion => 1;
-
+  Future<void> get getRecords async{
+    var q= await select(addrecords).get();
+      print(q.toString());
+  }
    // Moor supports Streams which emit elements when the watched data changes
   Stream<List<Addrecord>> watchAllRecords() => select(addrecords).watch();
 

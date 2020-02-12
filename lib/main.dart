@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: Router.addRecord,
+      initialRoute: Router.home,
       onGenerateRoute: Router.onGenerateRoute,
       navigatorKey: Router.navigatorKey,
     );
