@@ -17,11 +17,23 @@ abstract class _AddRecordController with Store {
       db=SnapExpenseDatabase();
       db.getRecords;
       _streamController = StreamController<List<Addrecord>>();
-      
+      _streamController.addStream(db.watchAllRecords());
     }
   @computed
+  bool get state{
+    print(recordStream.status);
+    if(recordStream==null){
+      return false;
+    }else if(recordStream.status==StreamStatus.waiting)
+    {
+      print("hello stream status");
+      return true;
+      }else{
+        return false;
+      }
+  }
+  @computed
   get customStream {
-    _streamController.addStream(db.watchAllRecords());
       recordStream =  ObservableStream(_streamController.stream);
       print(recordStream.status);
   }
