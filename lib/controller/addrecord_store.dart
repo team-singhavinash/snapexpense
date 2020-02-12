@@ -59,6 +59,15 @@ abstract class _AddRecordController with Store {
     return false;
   }
 
+  @action
+  Future<bool> updateRecord(Addrecord updaterecord)async{
+    bool status= await db.updateRecords(updaterecord);
+    if(status){
+      return true;
+    }else
+    return false;
+  } 
+
   void dispose() async {
     await _streamController.close();
   }

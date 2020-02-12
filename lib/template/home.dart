@@ -10,7 +10,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter_money_formatter/flutter_money_formatter.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-AddRecordController _addRecordController ;
+AddRecordController _addRecordController;
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -20,8 +20,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String _strikeComment;
+
   _HomeState() {
-   
     print("homestate");
   }
   @override
@@ -29,13 +30,15 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     _addRecordController = AddRecordController();
+    _addRecordController.customStream;
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Container(
-          child: Row(
+        //this row widget is for background color 
+         Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
@@ -52,7 +55,7 @@ class _HomeState extends State<Home> {
               ),
             ],
           ),
-        ),
+          //end here banckground color
         ModalProgressHUD(
           inAsyncCall: false,
           child: Scaffold(
@@ -86,10 +89,10 @@ class _HomeState extends State<Home> {
                   return ListView.builder(
                     itemCount: v.length,
                     itemBuilder: (_, int index) {
-                      return Container(
+                      return Container(                             //this is for padding top and bottom
                         padding: EdgeInsets.only(top: 5, bottom: 5),
                         child: Stack(children: <Widget>[
-                          Padding(
+                          Container(
                             padding: EdgeInsets.only(
                               left: 60,
                               right: 10,
@@ -184,8 +187,7 @@ class _HomeState extends State<Home> {
                                 ),
                                 children: <Widget>[
                                   Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment:CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Column(
                                         crossAxisAlignment:
@@ -274,12 +276,11 @@ class _HomeState extends State<Home> {
                                                                         autofocus:
                                                                             true,
                                                                         decoration:
-                                                                            InputDecoration(hintText: 'eg. He return money by Phonepay'),
+                                                                            InputDecoration(hintText: 'eg.Return money by Phonepay'),
                                                                         onChanged:
                                                                             (v) {
-                                                                          print(
-                                                                              "button presses");
-                                                                          //_strikeComment=v;
+                                                                          _strikeComment =
+                                                                              v;
                                                                         },
                                                                       ),
                                                                     ),
@@ -290,11 +291,9 @@ class _HomeState extends State<Home> {
                                                                   FlatButton(
                                                                     child: Text(
                                                                         'Cancel'),
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
+                                                                    onPressed: () => Router
+                                                                        .navigator
+                                                                        .pop(),
                                                                   ),
                                                                   FlatButton(
                                                                     child: Text(
@@ -305,24 +304,32 @@ class _HomeState extends State<Home> {
                                                                     ),
                                                                     onPressed:
                                                                         () {
+                                                                      Addrecord
+                                                                          updaterecord;
+                                                                      updaterecord = Addrecord(
+                                                                          amount: v[index]
+                                                                              .amount,
+                                                                          id: v[index]
+                                                                              .id,
+                                                                          desc: v[index]
+                                                                              .desc,
+                                                                          timestamp: v[index]
+                                                                              .timestamp,
+                                                                          expenseTag: v[index]
+                                                                              .expenseTag,
+                                                                          imgPath: v[index]
+                                                                              .imgPath,
+                                                                          strike: true,
+                                                                          strikeComment:
+                                                                              _strikeComment);
                                                                       print(
-                                                                          "button presses");
-                                                                      //   db.updateUser(
-                                                                      //     User(
-                                                                      //       id: snapshot.data[0][index]['id'],
-                                                                      //       strike: true,
-                                                                      //       strike_msg:_strikeComment,
-                                                                      //       strike_timestamp: DateTime.now().toString(),
-                                                                      //       desc: snapshot.data[0][index]['desc'],
-                                                                      //       timestamp: snapshot.data[0][index]['timestamp'],
-                                                                      //       amount: snapshot.data[0][index]['amount'],
-                                                                      //       expensetag: snapshot.data[0][index]['expensetag'],
-                                                                      //       file_name: snapshot.data[0][index]['file_name'],
-                                                                      //       user_id: snapshot.data[0][index]['user_id']
-                                                                      //       )
-                                                                      //     ).then((onValue){
-                                                                      //       Navigator.pop(context);
-                                                                      //     });
+                                                                          updaterecord);
+                                                                      _addRecordController
+                                                                          .updateRecord(
+                                                                              updaterecord);
+                                                                      Router
+                                                                          .navigator
+                                                                          .pop();
                                                                     },
                                                                   ),
                                                                 ],
@@ -341,18 +348,22 @@ class _HomeState extends State<Home> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Container(
+                                         Column(
+                                           children: <Widget>[
+                                              Container(
+                                                width: 210,
                                             child: Text(
                                               v[index].desc == null
                                                   ? 'Description not added'
                                                   : v[index].desc,
-                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 14,
                                               ),
                                             ),
                                           ),
+                                           ],
+                                         ),
                                           v[index].strike != null ||
                                                   v[index].strike == true
                                               ? Row(
@@ -367,7 +378,7 @@ class _HomeState extends State<Home> {
                                                           right: 8),
                                                     ),
                                                     Container(
-                                                      width: 200,
+                                                      width: 190,
                                                       padding: EdgeInsets.only(
                                                           top: 10, bottom: 10),
                                                       child: Text(
@@ -463,7 +474,7 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.pop(context);
                       Router.navigator
-                          .pushNamed(Router.addRecord, arguments: 1);
+                          .pushReplacementNamed(Router.addRecord, arguments: 1);
                     },
                   ),
                   ListTile(
@@ -472,7 +483,7 @@ class _HomeState extends State<Home> {
                     onTap: () {
                       Navigator.pop(context);
                       Router.navigator
-                          .pushNamed(Router.addRecord, arguments: 0);
+                          .pushReplacementNamed(Router.addRecord, arguments: 0);
                     },
                   ),
                   ListTile(

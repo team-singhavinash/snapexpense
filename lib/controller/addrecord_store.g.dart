@@ -42,4 +42,12 @@ mixin _$AddRecordController on _AddRecordController, Store {
   Future<bool> deleteRecord(dynamic oldrecord) {
     return _$deleteRecordAsyncAction.run(() => super.deleteRecord(oldrecord));
   }
+
+  final _$updateRecordAsyncAction = AsyncAction('updateRecord');
+
+  @override
+  Future<bool> updateRecord(dynamic updaterecord) {
+    return _$updateRecordAsyncAction
+        .run(() => super.updateRecord(updaterecord));
+  }
 }

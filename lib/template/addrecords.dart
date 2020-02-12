@@ -8,6 +8,8 @@ import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/model/addrecord_moor.dart';
 import 'package:snapexpenses/router/router.gr.dart';
 
+import '../router/router.gr.dart';
+
 class AddRecord extends StatefulWidget {
   int imageSelectionOption;
   AddRecord(this.imageSelectionOption);
@@ -19,8 +21,8 @@ class _AddRecordState extends State<AddRecord> {
   // intilizing controller
   AddRecordController controller = AddRecordController();
   int imageSelectionOption;
-  _AddRecordState(this.imageSelectionOption){
-     getImage(this.imageSelectionOption);
+  _AddRecordState(this.imageSelectionOption) {
+    getImage(this.imageSelectionOption);
   }
   final _formKeyUpload = GlobalKey<FormState>();
   int _amnt;
@@ -40,12 +42,11 @@ class _AddRecordState extends State<AddRecord> {
       temp = await ImagePicker.pickImage(source: ImageSource.gallery);
     }
     if (temp == null) {
-      Router.navigator.pop();
-    }else{
+      Router.navigator.pushReplacementNamed(Router.home);
+    } else {
       setState(() {
-       _image=temp;   
+        _image = temp;
       });
-     
     }
   }
 
@@ -94,9 +95,9 @@ class _AddRecordState extends State<AddRecord> {
                           desc: _desc,
                           expenseTag: _selected,
                           imgPath: await controller.getFilePath +
-                              basename(_image.path))
-                              );
-                             Router.navigator.pop();
+                              basename(_image.path)));
+                      //Router.navigator.pop();
+                      Router.navigator.pushReplacementNamed(Router.home);
                     });
 
                     setState(() {
@@ -203,7 +204,9 @@ class _AddRecordState extends State<AddRecord> {
                         hintText: 'Short Description',
                         //border: OutlineInputBorder(),
                       ),
-                      validator: (value) {return null;},
+                      validator: (value) {
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20,
