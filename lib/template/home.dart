@@ -30,7 +30,6 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
     _addRecordController = AddRecordController();
-    _addRecordController.customStream;
     
   }
 
@@ -59,9 +58,10 @@ class _HomeState extends State<Home> {
           //end here banckground color
         Observer(
           builder: (_) {
-            print("updateting"+_addRecordController.state.toString());
+            print(_addRecordController.recordList);
+            //print("updateting"+_addRecordController.state.toString());
             return ModalProgressHUD(
-              inAsyncCall: _addRecordController.state,
+              inAsyncCall: false,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
@@ -78,6 +78,7 @@ class _HomeState extends State<Home> {
                         size: 20,
                       ),
                       onPressed: () async {
+                        print( _addRecordController.filterFakeId());
                         // _selectDate(context);
 //                await FirebaseAuth.instance.signOut();
 //                Navigator.pushReplacement(
@@ -88,8 +89,9 @@ class _HomeState extends State<Home> {
                 ),
                 body: Observer(
                   builder: (_) {
-    print(_addRecordController.state.toString());
-                    final v = _addRecordController.recordStream.value;
+                    List<Addrecord> v =_addRecordController.recordStream1.value;
+                    print(_addRecordController.id);
+                    //
                     if (v != null)
                       return ListView.builder(
                         itemCount: v.length,
@@ -97,6 +99,7 @@ class _HomeState extends State<Home> {
                           return Container(                             //this is for padding top and bottom
                             padding: EdgeInsets.only(top: 5, bottom: 5),
                             child: Stack(children: <Widget>[
+                              Text('${_addRecordController.recordList.toString()}'),
                               Container(
                                 padding: EdgeInsets.only(
                                   left: 60,

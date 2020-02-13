@@ -12,7 +12,7 @@ import 'package:snapexpenses/template/addrecords.dart';
 
 class Router {
   static const home = '/';
-  static const addRecord = '/addRecord';
+  static const addRecord = '/add-record';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
