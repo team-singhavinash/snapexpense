@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
             print(_addRecordController.recordList);
             //print("updateting"+_addRecordController.state.toString());
             return ModalProgressHUD(
-              inAsyncCall: false,
+              inAsyncCall: _addRecordController.state,
               child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
@@ -78,20 +78,15 @@ class _HomeState extends State<Home> {
                         size: 20,
                       ),
                       onPressed: () async {
-                        print( _addRecordController.filterFakeId());
-                        // _selectDate(context);
-//                await FirebaseAuth.instance.signOut();
-//                Navigator.pushReplacement(
-//                    context, MaterialPageRoute(builder: (context) => Login()));
+                        _addRecordController.filterAllRecord();
                       },
                     ),
                   ],
                 ),
                 body: Observer(
                   builder: (_) {
-                    List<Addrecord> v =_addRecordController.recordStream1.value;
-                    print(_addRecordController.id);
-                    //
+                    List<Addrecord> v =_addRecordController.recordStream.value;
+                    print(_addRecordController.state);
                     if (v != null)
                       return ListView.builder(
                         itemCount: v.length,
@@ -99,7 +94,6 @@ class _HomeState extends State<Home> {
                           return Container(                             //this is for padding top and bottom
                             padding: EdgeInsets.only(top: 5, bottom: 5),
                             child: Stack(children: <Widget>[
-                              Text('${_addRecordController.recordList.toString()}'),
                               Container(
                                 padding: EdgeInsets.only(
                                   left: 60,

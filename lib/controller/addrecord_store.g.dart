@@ -9,11 +9,11 @@ part of 'addrecord_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AddRecordController on _AddRecordController, Store {
-  Computed<dynamic> _$allRecordComputed;
+  Computed<bool> _$stateComputed;
 
   @override
-  dynamic get allRecord =>
-      (_$allRecordComputed ??= Computed<dynamic>(() => super.allRecord)).value;
+  bool get state =>
+      (_$stateComputed ??= Computed<bool>(() => super.state)).value;
   Computed<Future<String>> _$getFilePathComputed;
 
   @override
@@ -53,23 +53,6 @@ mixin _$AddRecordController on _AddRecordController, Store {
       super.recordStream = value;
       _$recordStreamAtom.reportChanged();
     }, _$recordStreamAtom, name: '${_$recordStreamAtom.name}_set');
-  }
-
-  final _$recordStream1Atom = Atom(name: '_AddRecordController.recordStream1');
-
-  @override
-  ObservableStream<List<Addrecord>> get recordStream1 {
-    _$recordStream1Atom.context.enforceReadPolicy(_$recordStream1Atom);
-    _$recordStream1Atom.reportObserved();
-    return super.recordStream1;
-  }
-
-  @override
-  set recordStream1(ObservableStream<List<Addrecord>> value) {
-    _$recordStream1Atom.context.conditionallyRunInAction(() {
-      super.recordStream1 = value;
-      _$recordStream1Atom.reportChanged();
-    }, _$recordStream1Atom, name: '${_$recordStream1Atom.name}_set');
   }
 
   final _$idAtom = Atom(name: '_AddRecordController.id');
@@ -123,5 +106,18 @@ mixin _$AddRecordController on _AddRecordController, Store {
   Future<bool> updateRecord(Addrecord updaterecord) {
     return _$updateRecordAsyncAction
         .run(() => super.updateRecord(updaterecord));
+  }
+
+  final _$_AddRecordControllerActionController =
+      ActionController(name: '_AddRecordController');
+
+  @override
+  void filterAllRecord() {
+    final _$actionInfo = _$_AddRecordControllerActionController.startAction();
+    try {
+      return super.filterAllRecord();
+    } finally {
+      _$_AddRecordControllerActionController.endAction(_$actionInfo);
+    }
   }
 }
