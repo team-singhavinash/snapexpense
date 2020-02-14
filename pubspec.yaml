@@ -7,23 +7,24 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
-  timeago: #A library useful for creating fuzzy timestamps. (e.g. "5 minutes ago")
-  font_awesome_flutter:  #The Font Awesome Icon pack available as set of Flutter Icons.
-  flutter_money_formatter: 
-  grouped_buttons: #A set of Flutter widgets that makes grouping Checkboxes and Radio Buttons much easier!
+  intl: 
+  timeago: ^2.0.26
+  font_awesome_flutter: ^8.5.0
+  flutter_money_formatter: ^0.8.3
+  grouped_buttons: ^1.0.4
 
-  image_picker:  #change to multi image picker
-  modal_progress_hud: #A simple widget wrapper to enable modal progress HUD (a modal progress indicator, HUD = Heads Up Display)
-  auto_route:
+  image_picker: ^0.6.3+1
+  modal_progress_hud: ^0.1.3
+  auto_route: ^0.2.2
   
-  moor: # use the latest version
-  moor_ffi: # use the latest version
-  path_provider:
-  path:
+  moor: ^2.4.0
+  moor_ffi: ^0.4.0
+  path_provider: ^1.6.0
+  path: ^1.6.4
 
-  mobx:
-  flutter_mobx:
-  provider:
+  mobx: ^0.3.5
+  flutter_mobx: ^0.3.0+1
+  provider: ^4.0.4
   
   flutter:
     sdk: flutter
@@ -33,10 +34,10 @@ dependencies:
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
-  auto_route_generator:
-  moor_generator: # use the latest version
-  mobx_codegen:
-  build_runner: 
+  auto_route_generator: ^0.2.2
+  moor_generator: ^2.4.0
+  mobx_codegen: ^0.3.3+1
+  build_runner: ^1.7.4
   flutter_test:
     sdk: flutter
 
