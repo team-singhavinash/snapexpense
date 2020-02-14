@@ -41,11 +41,18 @@ class SnapExpenseDatabase extends _$SnapExpenseDatabase {
   @override
   int get schemaVersion => 1;
 
-  Future<List<Addrecord>> get getRecords async {
-    return select(addrecords).get();
-    // print(q.toString());
+  Future<List<Addrecord>> get getFirstRecordDateYear{
+   var query = select(addrecords)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.desc)
+      ]);
+    return query.get();
   }
 
+
+  //  select(addrecords)
+  //   .orderBy([(t)=>OrderingTerm(expression: t.timestamp,mode: OrderingMode.desc)])
+  //   .get();
   // Moor supports Streams which emit elements when the watched data changes
   Stream<List<Addrecord>> watchAllRecords() {
     var query = select(addrecords)

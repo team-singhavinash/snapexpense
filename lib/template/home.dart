@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/model/addrecord_moor.dart';
 import 'package:snapexpenses/router/router.gr.dart';
@@ -21,16 +22,10 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String _strikeComment;
-
-  _HomeState() {
-    print("homestate");
-  }
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _addRecordController = AddRecordController();
-    
   }
 
   @override
@@ -58,7 +53,14 @@ class _HomeState extends State<Home> {
           //end here banckground color
         Observer(
           builder: (_) {
-            print(_addRecordController.recordList);
+
+             Future<DateTime> _selectDate(BuildContext context) async {
+              return  showDatePicker(
+                  context: context,
+                  initialDate: _addRecordController.dateset==null?DateTime.now():_addRecordController.dateset,
+                  firstDate: DateTime(1993, 1),
+                  lastDate: DateTime(2101));
+            }
             //print("updateting"+_addRecordController.state.toString());
             return ModalProgressHUD(
               inAsyncCall: _addRecordController.state,
@@ -66,8 +68,8 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
                   title: Text(
-                    null == null ? 'All records' : "",
-                    style: TextStyle(fontSize: 14),
+                    _addRecordController.dateset == null ? 'All records' : DateFormat('dd-MM-yy').format(_addRecordController.dateset),
+                    style: TextStyle(fontSize: 16),
                   ),
                   backgroundColor: Colors.transparent,
                   elevation: 0,
@@ -78,15 +80,17 @@ class _HomeState extends State<Home> {
                         size: 20,
                       ),
                       onPressed: () async {
-                        _addRecordController.filterAllRecord();
+                       _addRecordController.filterDate(await _selectDate(context));
                       },
                     ),
                   ],
                 ),
                 body: Observer(
                   builder: (_) {
+                    _addRecordController.filterAllRecord;
                     List<Addrecord> v =_addRecordController.recordStream.value;
                     print(_addRecordController.state);
+                    print(_addRecordController.dateset);
                     if (v != null)
                       return ListView.builder(
                         itemCount: v.length,

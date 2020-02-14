@@ -7,6 +7,7 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  intl: 
   timeago: ^2.0.26
   font_awesome_flutter: ^8.5.0
   flutter_money_formatter: ^0.8.3

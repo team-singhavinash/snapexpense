@@ -9,6 +9,12 @@ part of 'addrecord_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AddRecordController on _AddRecordController, Store {
+  Computed<void> _$filterAllRecordComputed;
+
+  @override
+  void get filterAllRecord => (_$filterAllRecordComputed ??=
+          Computed<void>(() => super.filterAllRecord))
+      .value;
   Computed<bool> _$stateComputed;
 
   @override
@@ -20,23 +26,6 @@ mixin _$AddRecordController on _AddRecordController, Store {
   Future<String> get getFilePath => (_$getFilePathComputed ??=
           Computed<Future<String>>(() => super.getFilePath))
       .value;
-
-  final _$recordListAtom = Atom(name: '_AddRecordController.recordList');
-
-  @override
-  ObservableFuture<List<Addrecord>> get recordList {
-    _$recordListAtom.context.enforceReadPolicy(_$recordListAtom);
-    _$recordListAtom.reportObserved();
-    return super.recordList;
-  }
-
-  @override
-  set recordList(ObservableFuture<List<Addrecord>> value) {
-    _$recordListAtom.context.conditionallyRunInAction(() {
-      super.recordList = value;
-      _$recordListAtom.reportChanged();
-    }, _$recordListAtom, name: '${_$recordListAtom.name}_set');
-  }
 
   final _$recordStreamAtom = Atom(name: '_AddRecordController.recordStream');
 
@@ -55,28 +44,21 @@ mixin _$AddRecordController on _AddRecordController, Store {
     }, _$recordStreamAtom, name: '${_$recordStreamAtom.name}_set');
   }
 
-  final _$idAtom = Atom(name: '_AddRecordController.id');
+  final _$datesetAtom = Atom(name: '_AddRecordController.dateset');
 
   @override
-  int get id {
-    _$idAtom.context.enforceReadPolicy(_$idAtom);
-    _$idAtom.reportObserved();
-    return super.id;
+  DateTime get dateset {
+    _$datesetAtom.context.enforceReadPolicy(_$datesetAtom);
+    _$datesetAtom.reportObserved();
+    return super.dateset;
   }
 
   @override
-  set id(int value) {
-    _$idAtom.context.conditionallyRunInAction(() {
-      super.id = value;
-      _$idAtom.reportChanged();
-    }, _$idAtom, name: '${_$idAtom.name}_set');
-  }
-
-  final _$filterFakeIdAsyncAction = AsyncAction('filterFakeId');
-
-  @override
-  Future filterFakeId() {
-    return _$filterFakeIdAsyncAction.run(() => super.filterFakeId());
+  set dateset(DateTime value) {
+    _$datesetAtom.context.conditionallyRunInAction(() {
+      super.dateset = value;
+      _$datesetAtom.reportChanged();
+    }, _$datesetAtom, name: '${_$datesetAtom.name}_set');
   }
 
   final _$uploadFileAsyncAction = AsyncAction('uploadFile');
@@ -112,10 +94,20 @@ mixin _$AddRecordController on _AddRecordController, Store {
       ActionController(name: '_AddRecordController');
 
   @override
-  void filterAllRecord() {
+  void filterDate(DateTime mydate) {
     final _$actionInfo = _$_AddRecordControllerActionController.startAction();
     try {
-      return super.filterAllRecord();
+      return super.filterDate(mydate);
+    } finally {
+      _$_AddRecordControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic filterFakeId() {
+    final _$actionInfo = _$_AddRecordControllerActionController.startAction();
+    try {
+      return super.filterFakeId();
     } finally {
       _$_AddRecordControllerActionController.endAction(_$actionInfo);
     }

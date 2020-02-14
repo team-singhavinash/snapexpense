@@ -14,26 +14,24 @@ abstract class _AddRecordController with Store {
   StreamController<List<Addrecord>> _streamController;
 
   @observable
-  ObservableFuture<List<Addrecord>> recordList;
-
-  @observable
   ObservableStream<List<Addrecord>> recordStream;
 
   @observable
-  int id = 4;
+  DateTime dateset;
 
   _AddRecordController() {
     db = SnapExpenseDatabase();
     _streamController = StreamController<List<Addrecord>>();
-    db.watchAllRecords().listen((d) {
-      _streamController.add(d.toList());
-    });
+    filterAllRecord;
     recordStream = ObservableStream(_streamController.stream);
   }
 
   //time filter
   bool _timestampFilter(DateTime timestamp, DateTime newtimestamp,
       {int filterType = 0}) {
+    //special condtion if new date is null return all data so always return true
+    if(newtimestamp==null)
+      return true;
     //fitertype 0-days, 1 - month, 2 -year
     if (filterType == 0) if (timestamp.day == newtimestamp.day &&
         timestamp.year == newtimestamp.year &&
@@ -52,19 +50,26 @@ abstract class _AddRecordController with Store {
       return false;
   }
 
-  @action
-  void filterAllRecord() {
+  @computed
+  void get filterAllRecord {
+    print(dateset);
     db.watchAllRecords().listen((d) {
       final newRecord = d.where((test) {
-        return _timestampFilter(test.timestamp, DateTime.now());
+        return _timestampFilter(test.timestamp, dateset);
       }).toList();
       print(newRecord);
       _streamController.add(newRecord);
     });
   }
-
+  
   @action
-  filterFakeId() async {
+  void filterDate(DateTime mydate){
+    dateset=mydate;
+  }
+  @action
+  filterFakeId() {
+    dateset=DateTime.now();
+    //filterAllRecord;
     // print(await db.getRecords);
     //id = 9;
     //print(recordStream);
