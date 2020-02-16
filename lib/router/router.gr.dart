@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:snapexpenses/template/home.dart';
 import 'package:snapexpenses/template/addrecords.dart';
+import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/template/imageView.dart';
 
 class Router {
@@ -32,12 +33,14 @@ class Router {
           settings: settings,
         );
       case Router.addRecord:
-        if (hasInvalidArgs<int>(args, isRequired: true)) {
-          return misTypedArgsRoute<int>(args);
+        if (hasInvalidArgs<AddRecordArguments>(args, isRequired: true)) {
+          return misTypedArgsRoute<AddRecordArguments>(args);
         }
-        final typedArgs = args as int;
+        final typedArgs = args as AddRecordArguments;
         return MaterialPageRoute(
-          builder: (_) => AddRecord(imageSelectionOption: typedArgs),
+          builder: (_) => AddRecord(
+              imageSelectionOption: typedArgs.imageSelectionOption,
+              controller: typedArgs.controller),
           settings: settings,
         );
       case Router.imageViewer:
@@ -53,4 +56,16 @@ class Router {
         return unknownRoutePage(settings.name);
     }
   }
+}
+
+//**************************************************************************
+// Arguments holder classes
+//***************************************************************************
+
+//AddRecord arguments holder class
+class AddRecordArguments {
+  final int imageSelectionOption;
+  final AddRecordController controller;
+  AddRecordArguments(
+      {@required this.imageSelectionOption, @required this.controller});
 }

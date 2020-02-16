@@ -10,7 +10,7 @@ import 'package:snapexpenses/router/router.gr.dart';
 
 import '../router/router.gr.dart';
 
-final AddRecordController controller = AddRecordController();
+
 final _formKeyUpload = GlobalKey<FormState>();
 
 final FocusNode _amountFocus = FocusNode();
@@ -18,8 +18,9 @@ final FocusNode _descFocus = FocusNode();
 
 class AddRecord extends StatelessWidget {
   // intilizing controller
+  final AddRecordController controller;
   final int imageSelectionOption;
-  AddRecord({@required this.imageSelectionOption}) {
+  AddRecord({@required this.imageSelectionOption,@required this.controller}) {
     controller.setImageSelection(this.imageSelectionOption);
   }
   int _amnt;
@@ -75,13 +76,13 @@ class AddRecord extends StatelessWidget {
                       controller.uploadFile().then((v) async {
                         controller.insertRecord(Addrecord(
                             amount: _amnt,
-                            timestamp: DateTime.now(),
+                            timestamp: controller.dateset == null ? DateTime.now() : controller.dateset,
                             desc: _desc,
                             expenseTag: controller.selected,
                             imgPath: controller.uploadImage==null?null:await controller.getFilePath +
                                 basename(controller.uploadImage.path)));
                         //Router.navigator.pop();
-                        Router.navigator.popAndPushNamed(Router.home);
+                        Router.navigator.pop(Router.home);
                       });
 
                       // setState(() {

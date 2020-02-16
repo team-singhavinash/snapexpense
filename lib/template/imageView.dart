@@ -17,7 +17,7 @@ class ImageViewer extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       color: Colors.white,
-      child: Text(img),
+      child: Text(''),
       ),
       Container(
       height: double.infinity,

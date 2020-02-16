@@ -22,6 +22,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String _strikeComment;
+  
   @override
   void initState() {
     super.initState();
@@ -500,6 +501,7 @@ class _HomeState extends State<Home> {
                                         ),
                                       ),
                                       onTap: () {
+                                        if(v[index].imgPath!=null)
                                         Router.navigator.pushNamed(
                                           Router.imageViewer,
                                           arguments: v[index].imgPath
@@ -530,7 +532,7 @@ class _HomeState extends State<Home> {
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.red,
                 onPressed: () => Router.navigator
-                    .pushNamed(Router.addRecord, arguments: 1),
+                    .pushNamed(Router.addRecord, arguments: [1,_addRecordController]),
                 tooltip: 'Increment Counter',
                 child: Icon(Icons.camera),
               ),
@@ -548,7 +550,7 @@ class _HomeState extends State<Home> {
                         minWidth: 40,
                         onPressed: () => Router.navigator.pushNamed(
                             Router.addRecord,
-                            arguments: 2),
+                            arguments:[2,_addRecordController]),
                         child: Stack(
                           alignment: Alignment.center,
                           children: <Widget>[
@@ -569,7 +571,7 @@ class _HomeState extends State<Home> {
                           minWidth: 40,
                           onPressed: () => Router.navigator
                               .pushNamed(Router.addRecord,
-                                  arguments: 0),
+                                  arguments:AddRecordArguments(imageSelectionOption: 0,controller: _addRecordController)),
                           child: Icon(
                             Icons.insert_photo,
                             size: 30,
