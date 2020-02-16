@@ -9,10 +9,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/router_utils.dart';
 import 'package:snapexpenses/template/home.dart';
 import 'package:snapexpenses/template/addrecords.dart';
+import 'package:snapexpenses/template/imageView.dart';
 
 class Router {
   static const home = '/';
   static const addRecord = '/add-record';
+  static const imageViewer = '/image-viewer';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -30,12 +32,21 @@ class Router {
           settings: settings,
         );
       case Router.addRecord:
-        if (hasInvalidArgs<int>(args)) {
+        if (hasInvalidArgs<int>(args, isRequired: true)) {
           return misTypedArgsRoute<int>(args);
         }
         final typedArgs = args as int;
         return MaterialPageRoute(
-          builder: (_) => AddRecord(typedArgs),
+          builder: (_) => AddRecord(imageSelectionOption: typedArgs),
+          settings: settings,
+        );
+      case Router.imageViewer:
+        if (hasInvalidArgs<String>(args, isRequired: true)) {
+          return misTypedArgsRoute<String>(args);
+        }
+        final typedArgs = args as String;
+        return MaterialPageRoute(
+          builder: (_) => ImageViewer(img: typedArgs),
           settings: settings,
         );
       default:

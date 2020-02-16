@@ -10,20 +10,21 @@ import 'package:snapexpenses/router/router.gr.dart';
 
 import '../router/router.gr.dart';
 
+final AddRecordController controller = AddRecordController();
+final _formKeyUpload = GlobalKey<FormState>();
+
+final FocusNode _amountFocus = FocusNode();
+final FocusNode _descFocus = FocusNode();
+
 class AddRecord extends StatelessWidget {
   // intilizing controller
-  final AddRecordController controller = AddRecordController();
-  int imageSelectionOption;
-  AddRecord(this.imageSelectionOption) {
+  final int imageSelectionOption;
+  AddRecord({@required this.imageSelectionOption}) {
     controller.setImageSelection(this.imageSelectionOption);
   }
-  final _formKeyUpload = GlobalKey<FormState>();
   int _amnt;
   String _desc;
-
-  final FocusNode _amountFocus = FocusNode();
-  final FocusNode _descFocus = FocusNode();
-
+  
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -80,7 +81,7 @@ class AddRecord extends StatelessWidget {
                             imgPath: controller.uploadImage==null?null:await controller.getFilePath +
                                 basename(controller.uploadImage.path)));
                         //Router.navigator.pop();
-                        Router.navigator.pushReplacementNamed(Router.home);
+                        Router.navigator.popAndPushNamed(Router.home);
                       });
 
                       // setState(() {

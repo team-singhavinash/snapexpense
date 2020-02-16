@@ -106,8 +106,12 @@ class _HomeState extends State<Home> {
                       reverse: true,
                       onPageChanged: (index) {
                         print((0 - index) + 1);
+                        print("above");
                         print(DateTime.now()
                             .add(Duration(days: (0 - index) + 1)));
+                        if((0-index)+1==1){
+                         _addRecordController.filterDate(null); 
+                        }else
                         _addRecordController.filterDate(DateTime.now()
                             .add(Duration(days: (0 - index) + 1)));
                       },
@@ -288,7 +292,7 @@ class _HomeState extends State<Home> {
                                                                   _addRecordController
                                                                       .deleteRecord(
                                                                           oldrecord);
-                                                                          Router
+                                                                  Router
                                                                       .navigator
                                                                       .pop();
                                                                 },
@@ -496,6 +500,10 @@ class _HomeState extends State<Home> {
                                         ),
                                       ),
                                       onTap: () {
+                                        Router.navigator.pushNamed(
+                                          Router.imageViewer,
+                                          arguments: v[index].imgPath
+                                        );
                                         //Navigator.push(context, MaterialPageRoute(builder: (context)=>ImageViewer('/data/user/0/com.snapexpenses.snapexpenses/app_flutter/snaps/${snapshot.data[0][index]['file_name']}')));
                                       },
                                     ),
@@ -522,7 +530,7 @@ class _HomeState extends State<Home> {
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.red,
                 onPressed: () => Router.navigator
-                    .pushReplacementNamed(Router.addRecord, arguments: 1),
+                    .pushNamed(Router.addRecord, arguments: 1),
                 tooltip: 'Increment Counter',
                 child: Icon(Icons.camera),
               ),
@@ -538,7 +546,7 @@ class _HomeState extends State<Home> {
                     children: <Widget>[
                       MaterialButton(
                         minWidth: 40,
-                        onPressed: () => Router.navigator.pushReplacementNamed(
+                        onPressed: () => Router.navigator.pushNamed(
                             Router.addRecord,
                             arguments: 2),
                         child: Stack(
@@ -560,7 +568,7 @@ class _HomeState extends State<Home> {
                       MaterialButton(
                           minWidth: 40,
                           onPressed: () => Router.navigator
-                              .pushReplacementNamed(Router.addRecord,
+                              .pushNamed(Router.addRecord,
                                   arguments: 0),
                           child: Icon(
                             Icons.insert_photo,
