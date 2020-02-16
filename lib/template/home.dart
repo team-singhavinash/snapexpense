@@ -268,9 +268,35 @@ class _HomeState extends State<Home> {
                                                           strikeComment: v[
                                                                   index]
                                                               .strikeComment);
-                                                      _addRecordController
-                                                          .deleteRecord(
-                                                              oldrecord);
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (_) =>
+                                                            AlertDialog(
+                                                          title: Text(
+                                                              "Do you want to Delete ?"),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                                onPressed: () {
+                                                                  Router
+                                                                      .navigator
+                                                                      .pop();
+                                                                },
+                                                                child:
+                                                                    Text("No")),
+                                                            FlatButton(
+                                                                onPressed: () {
+                                                                  _addRecordController
+                                                                      .deleteRecord(
+                                                                          oldrecord);
+                                                                          Router
+                                                                      .navigator
+                                                                      .pop();
+                                                                },
+                                                                child: Text(
+                                                                    "Yes")),
+                                                          ],
+                                                        ),
+                                                      );
                                                     },
                                                   ),
 
@@ -458,9 +484,14 @@ class _HomeState extends State<Home> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: v[index].imgPath==null?AssetImage('assets/noattachment.png'):FileImage(
-                                              File(v[index].imgPath,),
-                                            ),
+                                            image: v[index].imgPath == null
+                                                ? AssetImage(
+                                                    'assets/noattachment.png')
+                                                : FileImage(
+                                                    File(
+                                                      v[index].imgPath,
+                                                    ),
+                                                  ),
                                           ),
                                         ),
                                       ),
@@ -491,7 +522,7 @@ class _HomeState extends State<Home> {
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.red,
                 onPressed: () => Router.navigator
-                          .pushReplacementNamed(Router.addRecord, arguments: 1), 
+                    .pushReplacementNamed(Router.addRecord, arguments: 1),
                 tooltip: 'Increment Counter',
                 child: Icon(Icons.camera),
               ),
@@ -501,27 +532,41 @@ class _HomeState extends State<Home> {
                 shape: CircularNotchedRectangle(),
                 child: Container(
                   height: 60,
-                  padding: EdgeInsets.only(right: 40,left: 40),
+                  padding: EdgeInsets.only(right: 40, left: 40),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       MaterialButton(
                         minWidth: 40,
-                        onPressed: ()=>Router.navigator
-                          .pushReplacementNamed(Router.addRecord, arguments: 2),
+                        onPressed: () => Router.navigator.pushReplacementNamed(
+                            Router.addRecord,
+                            arguments: 2),
                         child: Stack(
                           alignment: Alignment.center,
                           children: <Widget>[
-                          Icon(Icons.insert_photo,size: 30,color: Colors.red,),
-                          Icon(Icons.do_not_disturb,size: 25,color: Colors.white,)
-                        ],),
+                            Icon(
+                              Icons.insert_photo,
+                              size: 30,
+                              color: Colors.red,
+                            ),
+                            Icon(
+                              Icons.do_not_disturb,
+                              size: 25,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
                       MaterialButton(
-                        minWidth: 40,
-                        onPressed: ()=>Router.navigator
-                          .pushReplacementNamed(Router.addRecord, arguments: 0),
-                        child: Icon(Icons.insert_photo,size: 30,color: Colors.red,)
-                      )
+                          minWidth: 40,
+                          onPressed: () => Router.navigator
+                              .pushReplacementNamed(Router.addRecord,
+                                  arguments: 0),
+                          child: Icon(
+                            Icons.insert_photo,
+                            size: 30,
+                            color: Colors.red,
+                          ))
                     ],
                   ),
                 ),
