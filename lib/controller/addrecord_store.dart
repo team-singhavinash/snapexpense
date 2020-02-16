@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,6 +20,12 @@ abstract class _AddRecordController with Store {
   @observable
   DateTime dateset;
 
+  @observable
+  File uploadImage;
+
+  @observable
+  String selected = 'Splash Out';
+
   _AddRecordController() {
     db = SnapExpenseDatabase();
     _streamController = StreamController<List<Addrecord>>();
@@ -26,6 +33,10 @@ abstract class _AddRecordController with Store {
     recordStream = ObservableStream(_streamController.stream);
   }
 
+  @action
+  void setTags(select){
+    selected=select;
+  }
   //time filter
   bool _timestampFilter(DateTime timestamp, DateTime newtimestamp,
       {int filterType = 0}) {
@@ -66,35 +77,18 @@ abstract class _AddRecordController with Store {
   void filterDate(DateTime mydate){
     dateset=mydate;
   }
+
   @action
-  filterFakeId() {
-    dateset=DateTime.now();
-    //filterAllRecord;
-    // print(await db.getRecords);
-    //id = 9;
-    //print(recordStream);
-    // recordStream=recordStream.map((e){
-    //   print(e.toList().toString());
-    //   e.where((test)=>test.id==9);
-    // });
-    // print(await recordStream);
-    // _streamController.close();
-    //db.watchAllRecords().listen((d){
-    //recordStream=ObservableStream(d.where((condition)=>condition.id==9).toList().stream);
-    // print(d.where((condition)=>condition.id==9).toList());
-    // });
-    // _streamController1 = StreamController<List<Addrecord>>();
-    //  _streamController1.addStream(db.watchAllRecords());
-    // recordStream =  ObservableStream(_streamController1.stream);
-    //recordList=ObservableFuture(db.getRecords);
-    //recordList= ObservableList(db.getRecords.then((v)=>v.where((c)=>c.id==9).toList()));
-    // await _streamController.close();
-    // print("fake action");
-    // print(await recordList);
-    //list = await ObservableFuture(recordList.then((v)=>v.where((c)=>c.id==9).toList()));  ///this is way to filter deep array of object
-    //print(await recordList);
+  Future<void> setImageSelection(int option) async {
+    if (option == 1)
+      uploadImage= await ImagePicker.pickImage(source: ImageSource.camera);
+    else if(option==0) {
+      uploadImage= await ImagePicker.pickImage(source: ImageSource.gallery);
+    }else
+    uploadImage=null;
   }
-  @computed
+  
+   @computed
   bool get state{
    // print(recordStream.status);
    //return true;
@@ -120,13 +114,18 @@ abstract class _AddRecordController with Store {
   }
 
   @action
-  Future<bool> uploadFile(File f) async {
+  Future<bool> uploadFile() async {
+    // TODO - File Handling 
+    File f=uploadImage;
+    if(f!=null){
     final file = File(await getFilePath + basename(f.path));
     print(file.path);
     var img = f.readAsBytesSync();
     file.writeAsBytesSync(img);
     print("file upload");
     return true;
+    }else
+    return false;
   }
 
   @action

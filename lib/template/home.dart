@@ -458,8 +458,8 @@ class _HomeState extends State<Home> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             fit: BoxFit.cover,
-                                            image: FileImage(
-                                              File(v[index].imgPath),
+                                            image: v[index].imgPath==null?AssetImage('assets/noattachment.png'):FileImage(
+                                              File(v[index].imgPath,),
                                             ),
                                           ),
                                         ),
@@ -489,64 +489,47 @@ class _HomeState extends State<Home> {
                 },
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: () => _onButtonPressed(), //setState(() {}),
+                backgroundColor: Colors.red,
+                onPressed: () => Router.navigator
+                          .pushReplacementNamed(Router.addRecord, arguments: 1), 
                 tooltip: 'Increment Counter',
-                child: Icon(Icons.add),
+                child: Icon(Icons.camera),
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              bottomNavigationBar: BottomAppBar(
+                shape: CircularNotchedRectangle(),
+                child: Container(
+                  height: 60,
+                  padding: EdgeInsets.only(right: 40,left: 40),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: ()=>Router.navigator
+                          .pushReplacementNamed(Router.addRecord, arguments: 2),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                          Icon(Icons.insert_photo,size: 30,color: Colors.red,),
+                          Icon(Icons.do_not_disturb,size: 25,color: Colors.white,)
+                        ],),
+                      ),
+                      MaterialButton(
+                        minWidth: 40,
+                        onPressed: ()=>Router.navigator
+                          .pushReplacementNamed(Router.addRecord, arguments: 0),
+                        child: Icon(Icons.insert_photo,size: 30,color: Colors.red,)
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           );
         }),
       ],
     );
-  }
-
-  void _onButtonPressed() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            color: Colors.white, //Color(0xff737373),
-            height: 180,
-            child: Container(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white, //Theme.of(context).canvasColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16.0),
-                  topRight: Radius.circular(16.0),
-                ),
-              ),
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: Icon(Icons.camera_alt),
-                    title: Text('Open Camera'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Router.navigator
-                          .pushReplacementNamed(Router.addRecord, arguments: 1);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(FontAwesomeIcons.image),
-                    title: Text('Open Gallery'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Router.navigator
-                          .pushReplacementNamed(Router.addRecord, arguments: 0);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(FontAwesomeIcons.times),
-                    title: Text('Cancel'),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 }

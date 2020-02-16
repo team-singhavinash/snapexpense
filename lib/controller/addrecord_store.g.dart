@@ -61,11 +61,53 @@ mixin _$AddRecordController on _AddRecordController, Store {
     }, _$datesetAtom, name: '${_$datesetAtom.name}_set');
   }
 
+  final _$uploadImageAtom = Atom(name: '_AddRecordController.uploadImage');
+
+  @override
+  File get uploadImage {
+    _$uploadImageAtom.context.enforceReadPolicy(_$uploadImageAtom);
+    _$uploadImageAtom.reportObserved();
+    return super.uploadImage;
+  }
+
+  @override
+  set uploadImage(File value) {
+    _$uploadImageAtom.context.conditionallyRunInAction(() {
+      super.uploadImage = value;
+      _$uploadImageAtom.reportChanged();
+    }, _$uploadImageAtom, name: '${_$uploadImageAtom.name}_set');
+  }
+
+  final _$selectedAtom = Atom(name: '_AddRecordController.selected');
+
+  @override
+  String get selected {
+    _$selectedAtom.context.enforceReadPolicy(_$selectedAtom);
+    _$selectedAtom.reportObserved();
+    return super.selected;
+  }
+
+  @override
+  set selected(String value) {
+    _$selectedAtom.context.conditionallyRunInAction(() {
+      super.selected = value;
+      _$selectedAtom.reportChanged();
+    }, _$selectedAtom, name: '${_$selectedAtom.name}_set');
+  }
+
+  final _$setImageSelectionAsyncAction = AsyncAction('setImageSelection');
+
+  @override
+  Future<void> setImageSelection(int option) {
+    return _$setImageSelectionAsyncAction
+        .run(() => super.setImageSelection(option));
+  }
+
   final _$uploadFileAsyncAction = AsyncAction('uploadFile');
 
   @override
-  Future<bool> uploadFile(File f) {
-    return _$uploadFileAsyncAction.run(() => super.uploadFile(f));
+  Future<bool> uploadFile() {
+    return _$uploadFileAsyncAction.run(() => super.uploadFile());
   }
 
   final _$insertRecordAsyncAction = AsyncAction('insertRecord');
@@ -94,20 +136,20 @@ mixin _$AddRecordController on _AddRecordController, Store {
       ActionController(name: '_AddRecordController');
 
   @override
-  void filterDate(DateTime mydate) {
+  void setTags(dynamic select) {
     final _$actionInfo = _$_AddRecordControllerActionController.startAction();
     try {
-      return super.filterDate(mydate);
+      return super.setTags(select);
     } finally {
       _$_AddRecordControllerActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic filterFakeId() {
+  void filterDate(DateTime mydate) {
     final _$actionInfo = _$_AddRecordControllerActionController.startAction();
     try {
-      return super.filterFakeId();
+      return super.filterDate(mydate);
     } finally {
       _$_AddRecordControllerActionController.endAction(_$actionInfo);
     }

@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:path/path.dart';
@@ -10,108 +10,102 @@ import 'package:snapexpenses/router/router.gr.dart';
 
 import '../router/router.gr.dart';
 
-class AddRecord extends StatefulWidget {
-  int imageSelectionOption;
-  AddRecord(this.imageSelectionOption);
-  @override
-  _AddRecordState createState() => _AddRecordState(this.imageSelectionOption);
-}
-
-class _AddRecordState extends State<AddRecord> {
+class AddRecord extends StatelessWidget {
   // intilizing controller
-  AddRecordController controller = AddRecordController();
+  final AddRecordController controller = AddRecordController();
   int imageSelectionOption;
-  _AddRecordState(this.imageSelectionOption) {
-    getImage(this.imageSelectionOption);
+  AddRecord(this.imageSelectionOption) {
+    controller.setImageSelection(this.imageSelectionOption);
   }
   final _formKeyUpload = GlobalKey<FormState>();
   int _amnt;
   String _desc;
-  File _image;
-  var camera;
-  var _saving = false;
-  String _selected = 'Splash Out';
+
   final FocusNode _amountFocus = FocusNode();
   final FocusNode _descFocus = FocusNode();
-
-  Future getImage(camera) async {
-    var temp;
-    if (camera == 1)
-      temp = await ImagePicker.pickImage(source: ImageSource.camera);
-    else {
-      temp = await ImagePicker.pickImage(source: ImageSource.gallery);
-    }
-    if (temp == null) {
-      Router.navigator.pushReplacementNamed(Router.home);
-    } else {
-      setState(() {
-        _image = temp;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-        inAsyncCall: _saving,
-        child: Stack(
-          children: <Widget>[
-            _image != null
-                ? Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
+        inAsyncCall: false,
+        child: Observer(builder: (context) {
+          return Stack(
+            children: <Widget>[
+              controller.uploadImage != null
+                  ? Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: FileImage(_image), fit: BoxFit.cover)),
-                  )
-                : Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.white),
-                  ),
-            Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
+                            image: FileImage(controller.uploadImage),
+                            fit: BoxFit.cover),
+                      ),
+                    )
+                  : Scaffold(
+                      backgroundColor: Colors.red,
+                      body: Container(
+                        alignment: Alignment.topCenter,
+                        padding: EdgeInsets.only(top: 100),
+                        child: Text(
+                          "No Attachment",
+                          style: TextStyle(fontSize: 20, color: Colors.white70),
+                        ),
+                      ),
+                    ),
+              Scaffold(
                 backgroundColor: Colors.transparent,
-                elevation: 0,
-              ),
-              body: Center(
-                  child: ListView(
-                children: <Widget>[
-                  enableUpload(context),
-                ],
-              )),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () async {
-                  if (_formKeyUpload.currentState.validate()) {
-                    _formKeyUpload.currentState.save();
-                    setState(() {
-                      _saving = true;
-                    });
-                    controller.uploadFile(_image).then((v) async {
-                      controller.insertRecord(Addrecord(
-                          amount: _amnt,
-                          timestamp: DateTime.now(),
-                          desc: _desc,
-                          expenseTag: _selected,
-                          imgPath: await controller.getFilePath +
-                              basename(_image.path)));
-                      //Router.navigator.pop();
-                      Router.navigator.pushReplacementNamed(Router.home);
-                    });
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                ),
+                body: Center(
+                    child: ListView(
+                  children: <Widget>[
+                    enableUpload(context),
+                  ],
+                )),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () async {
+                    if (_formKeyUpload.currentState.validate()) {
+                      _formKeyUpload.currentState.save();
+                      // setState(() {
+                      //   _saving = true;
+                      // });
+                      controller.uploadFile().then((v) async {
+                        controller.insertRecord(Addrecord(
+                            amount: _amnt,
+                            timestamp: DateTime.now(),
+                            desc: _desc,
+                            expenseTag: controller.selected,
+                            imgPath: controller.uploadImage==null?null:await controller.getFilePath +
+                                basename(controller.uploadImage.path)));
+                        //Router.navigator.pop();
+                        Router.navigator.pushReplacementNamed(Router.home);
+                      });
 
-                    setState(() {
-                      _saving = false;
-                    });
-                    print("yahoo");
-                  }
-                }, //setState(() {}),
-                tooltip: 'Upload Now',
-                child: Icon(Icons.file_upload),
+                      // setState(() {
+                      //   _saving = false;
+                      // });
+                      //print("yahoo");
+                    }
+                  },
+                  backgroundColor: Colors.red,
+                  tooltip: 'Upload Now',
+                  child: Icon(Icons.save),
+                ),
               ),
-            ),
-          ],
-        ));
+            ],
+          );
+        }));
+  }
+
+  Future<DateTime> _selectDate(BuildContext context) async {
+    return showDatePicker(
+        context: context,
+        initialDate:
+            controller.dateset == null ? DateTime.now() : controller.dateset,
+        firstDate: DateTime(1993, 1),
+        lastDate: DateTime(2101));
   }
 
   Widget enableUpload(context) {
@@ -135,7 +129,7 @@ class _AddRecordState extends State<AddRecord> {
                 ),
                 Center(
                   child: Text(
-                    'Add Expenses',
+                    'Add Expense',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -182,7 +176,7 @@ class _AddRecordState extends State<AddRecord> {
                       },
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     TextFormField(
                       keyboardType: TextInputType.multiline,
@@ -209,14 +203,42 @@ class _AddRecordState extends State<AddRecord> {
                       },
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
+                    ),
+                    GestureDetector(
+                        onTap: () async {
+                          controller.filterDate(await _selectDate(context));
+                        },
+                        child: Container(
+                          color: Colors.white,
+                          child: Column(
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  DateFormat("EEE, MMM d, yyyy").format(
+                                      controller.dateset == null
+                                          ? DateTime.now()
+                                          : controller.dateset),
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        )),
+                    SizedBox(
+                      height: 10,
                     ),
                     Align(
                       child: Text('Add Tag'),
                       alignment: Alignment.centerLeft,
                     ),
                     RadioButtonGroup(
-                        picked: _selected,
+                        picked: controller.selected,
                         labels: <String>[
                           "Borrow",
                           "Lend",
@@ -224,9 +246,7 @@ class _AddRecordState extends State<AddRecord> {
                         ],
                         onSelected: (String selected) {
                           print(selected);
-                          setState(() {
-                            _selected = selected;
-                          });
+                          controller.setTags(selected);
                         }),
                   ]),
                 ),
