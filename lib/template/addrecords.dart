@@ -22,6 +22,9 @@ class AddRecord extends StatelessWidget {
   final int imageSelectionOption;
   AddRecord({@required this.imageSelectionOption,@required this.controller}) {
     controller.setImageSelection(this.imageSelectionOption);
+    if(imageSelectionOption!=2 && controller.uploadImage==null){
+      Router.navigator.pop();
+    }
   }
   int _amnt;
   String _desc;
