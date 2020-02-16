@@ -179,8 +179,7 @@ class AddRecord extends StatelessWidget {
                       height: 10,
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                      keyboardType: TextInputType.text,
                       textCapitalization: TextCapitalization.sentences,
                       onSaved: (v) {
                         if (v.isEmpty)
