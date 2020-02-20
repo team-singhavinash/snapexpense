@@ -87,6 +87,11 @@ abstract class _AddRecordController with Store {
     }else
     uploadImage=null;
   }
+
+  @action
+  void setImageSelectionForCamera(String option) {
+    uploadImage=File(option);
+  }
   
    @computed
   bool get state{

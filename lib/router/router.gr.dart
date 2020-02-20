@@ -55,12 +55,12 @@ class Router {
           settings: settings,
         );
       case Router.cameraScreen:
-        if (hasInvalidArgs<Key>(args)) {
-          return misTypedArgsRoute<Key>(args);
+        if (hasInvalidArgs<AddRecordController>(args)) {
+          return misTypedArgsRoute<AddRecordController>(args);
         }
-        final typedArgs = args as Key;
+        final typedArgs = args as AddRecordController;
         return MaterialPageRoute(
-          builder: (_) => CameraScreen(key: typedArgs),
+          builder: (_) => CameraScreen(typedArgs),
           settings: settings,
         );
       default:

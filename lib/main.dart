@@ -1,11 +1,7 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:snapexpenses/controller/customcamera_store.dart';
 import 'package:snapexpenses/router/router.gr.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); //this need to add for working
-  CustomCameraStore().setCameras(await availableCameras());
+void main(){
   runApp(MyApp());
   }
 
@@ -18,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: Router.cameraScreen,
+      initialRoute: Router.home,
       onGenerateRoute: Router.onGenerateRoute,
       navigatorKey: Router.navigatorKey,
     );

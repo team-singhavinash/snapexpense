@@ -531,8 +531,8 @@ class _HomeState extends State<Home> {
               ),
               floatingActionButton: FloatingActionButton(
                 backgroundColor: Colors.red,
-                onPressed: () => Router.navigator
-                    .pushNamed(Router.addRecord, arguments: AddRecordArguments(imageSelectionOption: 1,controller: _addRecordController)),
+                onPressed: () => Router.navigator.pushNamed(Router.cameraScreen, arguments: _addRecordController),
+                    //Router.navigator.pushNamed(Router.addRecord, arguments: AddRecordArguments(imageSelectionOption: 1,controller: _addRecordController)),
                 tooltip: 'Increment Counter',
                 child: Icon(Icons.camera),
               ),
