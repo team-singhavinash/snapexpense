@@ -10,7 +10,6 @@ import 'package:snapexpenses/router/router.gr.dart';
 
 import '../router/router.gr.dart';
 
-
 final _formKeyUpload = GlobalKey<FormState>();
 
 final FocusNode _amountFocus = FocusNode();
@@ -20,15 +19,21 @@ class AddRecord extends StatelessWidget {
   // intilizing controller
   final AddRecordController controller;
   final int imageSelectionOption;
-  AddRecord({@required this.imageSelectionOption,@required this.controller}) {
-    controller.setImageSelection(this.imageSelectionOption);
-    if(imageSelectionOption!=2 && controller.uploadImage==null){
+  AddRecord({@required this.imageSelectionOption, @required this.controller}) {
+    if (imageSelectionOption == null && controller.uploadImage != null) {
+      //do nothing here cos we back from camera app
+    } else {
+      //non camera
+      controller.setImageSelection(this.imageSelectionOption);
+      //this logic is for not allow if user select camera or gallery and somehow not receving image
+    }
+    if (imageSelectionOption != 2 && controller.uploadImage == null) {
       Router.navigator.pop();
     }
   }
   int _amnt;
   String _desc;
-  
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -79,11 +84,15 @@ class AddRecord extends StatelessWidget {
                       controller.uploadFile().then((v) async {
                         controller.insertRecord(Addrecord(
                             amount: _amnt,
-                            timestamp: controller.dateset == null ? DateTime.now() : controller.dateset,
+                            timestamp: controller.dateset == null
+                                ? DateTime.now()
+                                : controller.dateset,
                             desc: _desc,
                             expenseTag: controller.selected,
-                            imgPath: controller.uploadImage==null?null:await controller.getFilePath +
-                                basename(controller.uploadImage.path)));
+                            imgPath: controller.uploadImage == null
+                                ? null
+                                : await controller.getFilePath +
+                                    basename(controller.uploadImage.path)));
                         //Router.navigator.pop();
                         Router.navigator.pop(Router.home);
                       });

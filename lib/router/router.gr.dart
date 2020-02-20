@@ -11,11 +11,13 @@ import 'package:snapexpenses/template/home.dart';
 import 'package:snapexpenses/template/addrecords.dart';
 import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/template/imageView.dart';
+import 'package:snapexpenses/template/cameraScreen.dart';
 
 class Router {
   static const home = '/';
   static const addRecord = '/add-record';
   static const imageViewer = '/image-viewer';
+  static const cameraScreen = '/camera-screen';
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;
@@ -50,6 +52,15 @@ class Router {
         final typedArgs = args as String;
         return MaterialPageRoute(
           builder: (_) => ImageViewer(img: typedArgs),
+          settings: settings,
+        );
+      case Router.cameraScreen:
+        if (hasInvalidArgs<AddRecordController>(args)) {
+          return misTypedArgsRoute<AddRecordController>(args);
+        }
+        final typedArgs = args as AddRecordController;
+        return MaterialPageRoute(
+          builder: (_) => CameraScreen(typedArgs),
           settings: settings,
         );
       default:

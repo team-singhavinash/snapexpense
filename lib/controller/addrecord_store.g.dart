@@ -154,4 +154,14 @@ mixin _$AddRecordController on _AddRecordController, Store {
       _$_AddRecordControllerActionController.endAction(_$actionInfo);
     }
   }
+
+  @override
+  void setImageSelectionForCamera(String option) {
+    final _$actionInfo = _$_AddRecordControllerActionController.startAction();
+    try {
+      return super.setImageSelectionForCamera(option);
+    } finally {
+      _$_AddRecordControllerActionController.endAction(_$actionInfo);
+    }
+  }
 }
