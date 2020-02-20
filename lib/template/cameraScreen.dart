@@ -67,9 +67,9 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
-        onPressed: () {
-          _controller.initialize().then((_) async {
-            setState(() {});
+        onPressed: () async {
+         // _controller.initialize().then((_) async {
+            //plsetState(() {});
             final path = join(
               // Store the picture in the temp directory.
               // Find the temp directory using the `path_provider` plugin.
@@ -82,7 +82,7 @@ class _CameraScreenState extends State<CameraScreen> {
               Router.addRecord,
               arguments: AddRecordArguments(imageSelectionOption: null, controller: controller)
             );
-          });
+          //});
         },
         child: Icon(
           Icons.camera,
