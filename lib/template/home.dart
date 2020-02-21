@@ -65,7 +65,8 @@ class _HomeState extends State<Home> {
 
           //print("updateting"+_addRecordController.state.toString());
           return ModalProgressHUD(
-            inAsyncCall: _addRecordController.state,
+            color: Colors.black,
+            inAsyncCall: _addRecordController.filterLoader ??_addRecordController.state,
             child: Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -108,6 +109,7 @@ class _HomeState extends State<Home> {
                       onPageChanged: (index) {
                         print((0 - index) + 1);
                         print("above");
+                        _addRecordController.setFiterLoader(true);
                         print(DateTime.now()
                             .add(Duration(days: (0 - index) + 1)));
                         if ((0 - index) + 1 == 1) {
@@ -698,12 +700,12 @@ class _HomeState extends State<Home> {
                 },
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.white,
                 onPressed: () => Router.navigator.pushNamed(Router.cameraScreen,
                     arguments: _addRecordController),
                 //Router.navigator.pushNamed(Router.addRecord, arguments: AddRecordArguments(imageSelectionOption: 1,controller: _addRecordController)),
-                tooltip: 'Increment Counter',
-                child: Icon(Icons.camera),
+                tooltip: 'Add record from Camera',
+                child: Icon(Icons.camera,color: Colors.red,size: 40,),
               ),
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
