@@ -205,7 +205,7 @@ class AddRecord extends StatelessWidget {
                       onFieldSubmitted: (v) {
                         _descFocus.unfocus();
                       },
-                      maxLength: 150,
+                      maxLength: 280,
 //                      textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         hintText: 'Short Description',
