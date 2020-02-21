@@ -145,6 +145,10 @@ abstract class _AddRecordController with Store {
       return false;
   }
 
+  Future<void> deleteImg(String filename) async {
+    await File(filename).delete(recursive: true);
+  }
+
   @action
   Future insertRecord(Addrecord newrecord) async {
     return await db.insertRecords(newrecord);
@@ -152,6 +156,7 @@ abstract class _AddRecordController with Store {
 
   @action
   Future<bool> deleteRecord(Addrecord oldrecord) async {
+    await deleteImg(oldrecord.imgPath);
     int status = await db.deleteRecords(oldrecord);
     if (status > 0) {
       return true;
