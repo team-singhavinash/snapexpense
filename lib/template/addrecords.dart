@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
+// import 'package:modal_progress_hud/modal_progress_hud.dart';
+// import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:path/path.dart';
 import 'package:snapexpenses/controller/addrecord_store.dart';
 import 'package:snapexpenses/model/addrecord_moor.dart';
@@ -24,11 +25,12 @@ class AddRecord extends StatelessWidget {
       //do nothing here cos we back from camera app
     } else {
       //non camera
-      controller.setImageSelection(this.imageSelectionOption);
+      controller.setImageSelection(this.imageSelectionOption).then((_) {
+        if (imageSelectionOption != 2 && controller.uploadImage == null) {
+          Router.navigator.pop();
+        }
+      });
       //this logic is for not allow if user select camera or gallery and somehow not receving image
-    }
-    if (imageSelectionOption != 2 && controller.uploadImage == null) {
-      Router.navigator.pop();
     }
   }
   int _amnt;
@@ -43,13 +45,13 @@ class AddRecord extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                flex: 4,
+                flex: 6,
                 child: Container(
                   color: Colors.red,
                 ),
               ),
               Expanded(
-                flex: 6,
+                flex: 4,
                 child: Container(
                   color: Colors.white,
                 ),
@@ -59,11 +61,11 @@ class AddRecord extends StatelessWidget {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Text(
-                'Add Expense',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              backgroundColor: Colors.black26,
+               title: Text(
+               'Add Expense',
+               style: TextStyle(fontSize: 16),
+               ),
+              backgroundColor: Colors.transparent,
               elevation: 0,
             ),
             body: Center(
@@ -101,9 +103,12 @@ class AddRecord extends StatelessWidget {
                   //print("yahoo");
                 }
               },
-              backgroundColor: Colors.red,
-              tooltip: 'Upload Now',
-              child: Icon(Icons.save),
+              backgroundColor: Colors.white,
+              tooltip: 'Add Expense',
+              child: Icon(
+                Icons.add,
+                color: Colors.red,
+              ),
             ),
           ),
         ],
@@ -170,11 +175,14 @@ class AddRecord extends StatelessWidget {
                     FocusScope.of(context).requestFocus(_descFocus);
                   },
                   decoration: InputDecoration(
-                      hintText: 'Amount',
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.all(8.0),
-                      errorStyle: TextStyle(height: 2),
-                      prefix: Text("Rs. ")),
+                    hintText: 'Amount*',
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(8.0),
+                    errorStyle: TextStyle(height: 2),
+                    prefixIcon: Icon(
+                      FontAwesomeIcons.rupeeSign,
+                    ),
+                  ),
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Please Enter Amount*';
@@ -213,6 +221,7 @@ class AddRecord extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'Short Description',
                     border: InputBorder.none,
+                    prefixIcon: Icon(FontAwesomeIcons.stickyNote),
                     contentPadding: EdgeInsets.all(8),
                     helperStyle: TextStyle(height: 2.0),
                   ),
@@ -234,8 +243,16 @@ class AddRecord extends StatelessWidget {
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.calendar_today),
-                          SizedBox(width: 8,),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Icon(
+                            Icons.calendar_today,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(

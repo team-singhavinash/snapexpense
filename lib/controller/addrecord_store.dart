@@ -24,6 +24,9 @@ abstract class _AddRecordController with Store {
   File uploadImage;
 
   @observable
+  bool filterLoader = true;
+
+  @observable
   String selected = 'Splash Out';
 
   _AddRecordController() {
@@ -34,15 +37,15 @@ abstract class _AddRecordController with Store {
   }
 
   @action
-  void setTags(select){
-    selected=select;
+  void setTags(select) {
+    selected = select;
   }
+
   //time filter
   bool _timestampFilter(DateTime timestamp, DateTime newtimestamp,
       {int filterType = 0}) {
     //special condtion if new date is null return all data so always return true
-    if(newtimestamp==null)
-      return true;
+    if (newtimestamp == null) return true;
     //fitertype 0-days, 1 - month, 2 -year
     if (filterType == 0) if (timestamp.day == newtimestamp.day &&
         timestamp.year == newtimestamp.year &&
@@ -63,49 +66,58 @@ abstract class _AddRecordController with Store {
 
   @computed
   void get filterAllRecord {
+    //setFiterLoader(true);
     print(dateset);
     db.watchAllRecords().listen((d) {
       final newRecord = d.where((test) {
         return _timestampFilter(test.timestamp, dateset);
       }).toList();
       print(newRecord);
-      _streamController.add(newRecord);
+      Future.delayed(Duration(milliseconds: 500), () {
+        _streamController.add(newRecord);
+        filterLoader=false;
+      });
     });
   }
-  
+
   @action
-  void filterDate(DateTime mydate){
-    dateset=mydate;
+  setFiterLoader(bool state){
+    filterLoader=state;
+    print("state is $state");
+  }
+
+  @action
+  void filterDate(DateTime mydate) {
+    dateset = mydate;
   }
 
   @action
   Future<void> setImageSelection(int option) async {
     if (option == 1)
-      uploadImage= await ImagePicker.pickImage(source: ImageSource.camera);
-    else if(option==0) {
-      uploadImage= await ImagePicker.pickImage(source: ImageSource.gallery);
-    }else
-    uploadImage=null;
+      uploadImage = await ImagePicker.pickImage(source: ImageSource.camera);
+    else if (option == 0) {
+      uploadImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    } else
+      uploadImage = null;
   }
 
   @action
   void setImageSelectionForCamera(String option) {
-    uploadImage=File(option);
+    uploadImage = File(option);
   }
-  
-   @computed
-  bool get state{
-   // print(recordStream.status);
-   //return true;
+
+  @computed
+  bool get state {
+    // print(recordStream.status);
+    //return true;
     // if(recordStream==null){
     //   return true;
-    // }else 
-    if(recordStream.status==StreamStatus.waiting)
-    {
+    // }else
+    if (recordStream.status == StreamStatus.waiting) {
       return true;
-      }else{
-        return false;
-      }
+    } else {
+      return false;
+    }
   }
 
   @computed
@@ -120,17 +132,17 @@ abstract class _AddRecordController with Store {
 
   @action
   Future<bool> uploadFile() async {
-    // TODO - File Handling 
-    File f=uploadImage;
-    if(f!=null){
-    final file = File(await getFilePath + basename(f.path));
-    print(file.path);
-    var img = f.readAsBytesSync();
-    file.writeAsBytesSync(img);
-    print("file upload");
-    return true;
-    }else
-    return false;
+    // TODO - File Handling
+    File f = uploadImage;
+    if (f != null) {
+      final file = File(await getFilePath + basename(f.path));
+      print(file.path);
+      var img = f.readAsBytesSync();
+      file.writeAsBytesSync(img);
+      print("file upload");
+      return true;
+    } else
+      return false;
   }
 
   @action
