@@ -131,18 +131,18 @@ abstract class _AddRecordController with Store {
   }
 
   @action
-  Future<bool> uploadFile() async {
+  Future<File> uploadFile() async {
     // TODO - File Handling
     File f = uploadImage;
     if (f != null) {
-      final file = File(await getFilePath + basename(f.path));
+      final file = File(await getFilePath +DateTime.now().toString()+ basename(f.path));
       print(file.path);
       var img = f.readAsBytesSync();
       file.writeAsBytesSync(img);
       print("file upload");
-      return true;
+      return file;
     } else
-      return false;
+      return null;
   }
 
   Future<void> deleteImg(String filename) async {

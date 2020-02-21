@@ -61,10 +61,10 @@ class AddRecord extends StatelessWidget {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-               title: Text(
-               'Add Expense',
-               style: TextStyle(fontSize: 16),
-               ),
+              title: Text(
+                'Add Expense',
+                style: TextStyle(fontSize: 16),
+              ),
               backgroundColor: Colors.transparent,
               elevation: 0,
             ),
@@ -82,17 +82,17 @@ class AddRecord extends StatelessWidget {
                   //   _saving = true;
                   // });
                   controller.uploadFile().then((v) async {
-                    controller.insertRecord(Addrecord(
-                        amount: _amnt,
-                        timestamp: controller.dateset == null
-                            ? DateTime.now()
-                            : controller.dateset,
-                        desc: _desc,
-                        expenseTag: controller.selected,
-                        imgPath: controller.uploadImage == null
-                            ? null
-                            : await controller.getFilePath +
-                                basename(controller.uploadImage.path)));
+                    controller.insertRecord(
+                      Addrecord(
+                          amount: _amnt,
+                          timestamp: controller.dateset == null
+                              ? DateTime.now()
+                              : controller.dateset,
+                          desc: _desc,
+                          expenseTag: controller.selected,
+                          imgPath:
+                              controller.uploadImage == null ? null : v.path),
+                    );
                     //Router.navigator.pop();
                     Router.navigator.pop(Router.home);
                   });
