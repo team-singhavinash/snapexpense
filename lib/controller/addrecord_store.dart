@@ -117,7 +117,7 @@ abstract class _AddRecordController with Store {
       return true;
     } else {
       return false;
-    }
+    } 
   }
 
   @computed
