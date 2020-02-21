@@ -78,6 +78,23 @@ mixin _$AddRecordController on _AddRecordController, Store {
     }, _$uploadImageAtom, name: '${_$uploadImageAtom.name}_set');
   }
 
+  final _$filterLoaderAtom = Atom(name: '_AddRecordController.filterLoader');
+
+  @override
+  bool get filterLoader {
+    _$filterLoaderAtom.context.enforceReadPolicy(_$filterLoaderAtom);
+    _$filterLoaderAtom.reportObserved();
+    return super.filterLoader;
+  }
+
+  @override
+  set filterLoader(bool value) {
+    _$filterLoaderAtom.context.conditionallyRunInAction(() {
+      super.filterLoader = value;
+      _$filterLoaderAtom.reportChanged();
+    }, _$filterLoaderAtom, name: '${_$filterLoaderAtom.name}_set');
+  }
+
   final _$selectedAtom = Atom(name: '_AddRecordController.selected');
 
   @override
@@ -140,6 +157,16 @@ mixin _$AddRecordController on _AddRecordController, Store {
     final _$actionInfo = _$_AddRecordControllerActionController.startAction();
     try {
       return super.setTags(select);
+    } finally {
+      _$_AddRecordControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setFiterLoader(bool state) {
+    final _$actionInfo = _$_AddRecordControllerActionController.startAction();
+    try {
+      return super.setFiterLoader(state);
     } finally {
       _$_AddRecordControllerActionController.endAction(_$actionInfo);
     }
