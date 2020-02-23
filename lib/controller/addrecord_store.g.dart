@@ -123,7 +123,7 @@ mixin _$AddRecordController on _AddRecordController, Store {
   final _$uploadFileAsyncAction = AsyncAction('uploadFile');
 
   @override
-  Future<bool> uploadFile() {
+  Future<File> uploadFile() {
     return _$uploadFileAsyncAction.run(() => super.uploadFile());
   }
 
