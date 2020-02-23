@@ -1,2 +1,8 @@
-# snapexpense
-Snap expenses app with proper git flow 
+# snapexpenses
+
+snapexpenses- its about money 
+
+## Getting Started
+
+
+
