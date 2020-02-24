@@ -708,50 +708,28 @@ class _HomeState extends State<Home> {
                 child: Icon(Icons.camera,color: Colors.red,size: 40,),
               ),
               floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
+                  FloatingActionButtonLocation.endDocked,
               bottomNavigationBar: BottomAppBar(
                 shape: CircularNotchedRectangle(),
                 child: Container(
                   height: 60,
                   padding: EdgeInsets.only(right: 40, left: 40),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      MaterialButton(
-                        minWidth: 40,
-                        onPressed: () => Router.navigator.pushNamed(
-                            Router.addRecord,
-                            arguments: AddRecordArguments(
-                                imageSelectionOption: 2,
-                                controller: _addRecordController)),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            Icon(
-                              Icons.insert_photo,
-                              size: 30,
-                              color: Colors.red,
-                            ),
-                            Icon(
-                              Icons.do_not_disturb,
-                              size: 25,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ),
-                      MaterialButton(
+                      Padding(
+                        padding: const EdgeInsets.only(right: 45),
+                        child: MaterialButton(
                           minWidth: 40,
                           onPressed: () => Router.navigator.pushNamed(
                               Router.addRecord,
                               arguments: AddRecordArguments(
-                                  imageSelectionOption: 0,
+                                  imageSelectionOption: 2,
                                   controller: _addRecordController)),
-                          child: Icon(
-                            Icons.insert_photo,
-                            size: 30,
-                            color: Colors.red,
-                          ))
+                          child: Image(image: AssetImage('assets/icon_nophoto.png'),height: 30,)
+                        ),
+                      ),
+                      
                     ],
                   ),
                 ),
