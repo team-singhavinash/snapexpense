@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Snapexpenses',
+      title: 'Snap Expense',
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
